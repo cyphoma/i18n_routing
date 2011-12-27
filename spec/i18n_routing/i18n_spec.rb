@@ -281,7 +281,7 @@ describe :localized_routes do
     end
 
     it "url_for generates routes using localized values" do
-      url_for(:controller => :users).should == "/#{I18n.t :as, :scope => :'routes.users'}"
+      url_for(:controller => :users, :i18n_locale => I18n.locale).should == "/#{I18n.t :as, :scope => :'routes.users'}"
       url_for(:controller => :about, :action => :show).should == "/#{I18n.t :about, :scope => :named_routes_path}"
       if rails3?
         url_for(:controller => :about2, :action => :show).should == "/#{I18n.t :about2, :scope => :named_routes_path}"

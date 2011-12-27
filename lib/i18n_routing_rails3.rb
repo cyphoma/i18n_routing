@@ -50,7 +50,7 @@ module I18nRouting
             constraints = opts[:constraints] ? opts[:constraints].dup : {}
             constraints[:i18n_locale] = locale.to_s
 
-            scope(:constraints => constraints, :path_names => I18nRouting.path_names(resource.name, @scope)) do
+            scope(:constraints => constraints, :path_names => I18nRouting.path_names(resource.name, @scope), :defaults => {:i18n_locale => locale}) do
               localized_branch(locale) do
                 send(type, *res) do
                   
