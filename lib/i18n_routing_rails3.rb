@@ -68,7 +68,7 @@ module I18nRouting
                       @scope[:name_prefix] = @scope[:name_prefix].gsub(Regexp.new("#{old.name}$"), resource.name)
                     end
 
-                    block.call if block
+                    block.call
 
                     @scope[:scope_level_resource] = old
                     @scope[:i18n_real_resource_name] = old_name
