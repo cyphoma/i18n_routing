@@ -326,6 +326,8 @@ module I18nRouting
       if !@localized_path.blank? and @localized_path != @path
         #@options[:controller] ||= @options[:as]
         @options[:as] = "#{I18nRouting.locale_escaped(locale)}_#{@options[:as]}"
+        @options[:defaults] ||= {}
+        @options[:defaults].merge!(:i18n_locale => locale)
         @path = @localized_path
         @options[:constraints] = @options[:constraints] ? @options[:constraints].dup : {}
         @options[:constraints][:i18n_locale] = locale.to_s
