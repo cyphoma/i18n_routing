@@ -37,7 +37,7 @@ module I18nRouting
           localized_path = I18nRouting.translation_for(resource.name, type)
 
           # A translated route exists :
-          if !localized_path.blank? and String === localized_path
+          if localized_path.present? && localized_path.is_a?(String)
             puts("[I18n] > localize %-10s: %40s (%s) => /%s" % [type, resource.name, locale, localized_path]) if @i18n_verbose
             opts = options.dup
             opts[:path] = localized_path
@@ -50,7 +50,7 @@ module I18nRouting
             constraints = opts[:constraints] ? opts[:constraints].dup : {}
             constraints[:i18n_locale] = locale.to_s
 
-            scope(:constraints => constraints, :path_names => I18nRouting.path_names(resource.name, @scope)) do
+            scope(:constraints => constraints, :path_names => I18nRouting.path_names(resource.name, @scope), :defaults => {:i18n_locale => locale}) do
               localized_branch(locale) do
                 send(type, *res) do
 
@@ -326,6 +326,8 @@ module I18nRouting
       if !@localized_path.blank? and @localized_path != @path
         #@options[:controller] ||= @options[:as]
         @options[:as] = "#{I18nRouting.locale_escaped(locale)}_#{@options[:as]}"
+        @options[:defaults] ||= {}
+        @options[:defaults].merge!(:i18n_locale => locale)
         @path = @localized_path
         @path = "#{@path}(.:format)" if append_format
         @options[:constraints] = @options[:constraints] ? @options[:constraints].dup : {}
